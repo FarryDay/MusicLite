@@ -2,6 +2,7 @@ import PasswordInputForm from '@/components/UI/Auth/PasswordInput'
 import useAlert from '@/hooks/useAlert'
 import ButtonForm from '@UI/Auth/Button'
 import InputForm from '@UI/Auth/Input'
+import { CircularProgress } from '@nextui-org/react'
 import AuthService from '@services/Auth.service'
 import { isAxiosError } from 'axios'
 import { useFormik } from 'formik'
@@ -19,7 +20,9 @@ export default function AuthLoginForm() {
 			password: '',
 		},
 		onSubmit: async values => {
+			form.setSubmitting(true)
 			const res = await new AuthService().login(values)
+			form.setSubmitting(false)
 			if (!res) return
 			if (isAxiosError(res)) {
 				open(res.response?.data.message || 'Ошибка', 'error')
@@ -49,7 +52,20 @@ export default function AuthLoginForm() {
 				onChange={form.handleChange}
 				label='Пароль'
 			/>
-			<ButtonForm onClick={() => form.handleSubmit()}>Войти</ButtonForm>
+			<ButtonForm
+				isDisabled={form.isSubmitting}
+				onClick={() => form.handleSubmit()}
+			>
+				{form.isSubmitting ? (
+					<CircularProgress
+						color='secondary'
+						size='sm'
+						aria-label='Загрузка...'
+					/>
+				) : (
+					'Войти'
+				)}
+			</ButtonForm>
 		</form>
 	)
 }

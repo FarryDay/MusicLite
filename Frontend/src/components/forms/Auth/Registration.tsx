@@ -3,6 +3,7 @@ import InputForm from '@/components/UI/Auth/Input'
 import PasswordInputForm from '@/components/UI/Auth/PasswordInput'
 import useAlert from '@/hooks/useAlert'
 import AuthService from '@/services/Auth.service'
+import { CircularProgress } from '@nextui-org/react'
 import { isAxiosError } from 'axios'
 import { useFormik } from 'formik'
 import { useRouter } from 'next/navigation'
@@ -21,7 +22,9 @@ export default function AuthRegistrationForm() {
 			repeatPassword: '',
 		},
 		onSubmit: async values => {
+			form.setSubmitting(true)
 			const res = await new AuthService().registration(values)
+			form.setSubmitting(false)
 			if (!res) return
 			if (isAxiosError(res)) {
 				open(res.response?.data.message || 'Ошибка', 'error')
@@ -67,8 +70,19 @@ export default function AuthRegistrationForm() {
 				onChange={form.handleChange}
 				label='Повторите пароль'
 			/>
-			<ButtonForm onClick={() => form.handleSubmit()}>
-				Зарегистрироваться
+			<ButtonForm
+				isDisabled={form.isSubmitting}
+				onClick={() => form.handleSubmit()}
+			>
+				{form.isSubmitting ? (
+					<CircularProgress
+						color='secondary'
+						size='sm'
+						aria-label='Загрузка...'
+					/>
+				) : (
+					'Зарегистрироваться'
+				)}
 			</ButtonForm>
 		</form>
 	)

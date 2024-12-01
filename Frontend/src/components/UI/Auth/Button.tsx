@@ -1,7 +1,7 @@
 import { Button, ButtonProps } from '@nextui-org/react'
 
 type Props = {
-	children: string
+	children: string | React.ReactNode
 } & React.ComponentProps<'button'> &
 	ButtonProps
 
