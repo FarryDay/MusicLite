@@ -1,3 +1,4 @@
+import PasswordInputForm from '@/components/UI/Auth/PasswordInput'
 import useAlert from '@/hooks/useAlert'
 import ButtonForm from '@UI/Auth/Button'
 import InputForm from '@UI/Auth/Input'
@@ -40,7 +41,7 @@ export default function AuthLoginForm() {
 				onChange={form.handleChange}
 				label='Логин'
 			/>
-			<InputForm
+			<PasswordInputForm
 				id='password'
 				isInvalid={!!form.errors.password && form.touched.password}
 				errorMessage={form.errors.password}

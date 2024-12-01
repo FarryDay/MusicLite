@@ -1,5 +1,6 @@
 import ButtonForm from '@/components/UI/Auth/Button'
 import InputForm from '@/components/UI/Auth/Input'
+import PasswordInputForm from '@/components/UI/Auth/PasswordInput'
 import useAlert from '@/hooks/useAlert'
 import AuthService from '@/services/Auth.service'
 import { isAxiosError } from 'axios'
@@ -17,6 +18,7 @@ export default function AuthRegistrationForm() {
 			username: '',
 			login: '',
 			password: '',
+			repeatPassword: '',
 		},
 		onSubmit: async values => {
 			const res = await new AuthService().registration(values)
@@ -49,13 +51,21 @@ export default function AuthRegistrationForm() {
 				onChange={form.handleChange}
 				label='Логин'
 			/>
-			<InputForm
+			<PasswordInputForm
 				id='password'
 				isInvalid={!!form.errors.password && form.touched.password}
 				errorMessage={form.errors.password}
 				value={form.values.password}
 				onChange={form.handleChange}
 				label='Пароль'
+			/>
+			<PasswordInputForm
+				id='repeatPassword'
+				isInvalid={!!form.errors.repeatPassword && form.touched.repeatPassword}
+				errorMessage={form.errors.repeatPassword}
+				value={form.values.repeatPassword}
+				onChange={form.handleChange}
+				label='Повторите пароль'
 			/>
 			<ButtonForm onClick={() => form.handleSubmit()}>
 				Зарегистрироваться
